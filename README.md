@@ -6,25 +6,26 @@ A simple program written in Clojure that claims the free e-book of the day from 
 
 In order to create a runnable jar-file, simply stand in the project catalog and type (leiningen required) :
 
-   $ lein uberjar
+    $ lein uberjar
 
 ## Usage
 
 After a jar-file has been created, run it using the following syntax:
 
-    $ java -jar packt-freebie-0.1.0-standalone.jar [email] [pass]
+    $ java -jar packt-freebie-0.1.0-standalone.jar [cfg-path]
 
-packt-freebie will login to your account and claim the free e-book of the day.
+where 'cfg-path' is the file-path to a config file that contains the email-address and password seperated by a whitespace.
+packt-freebie will then login to your account and claim the free e-book of the day.
 It has no scheduler, so you need to put in in a crontab or such in order to run it daily.
 
 ## Options
 
-email - email address for the registered account
-pass - password
-
 ## Examples
 
-$ java -jar packt-freebie-0.1.0-standalone.jar your@email.com password
+filename: credentials.txt
+file-contents: 'your@email.com password'
+
+    $ java -jar packt-freebie-0.1.0-standalone.jar credentials.txt
 
 ### Future functionality
 

@@ -23,14 +23,14 @@
 (defn auth
   "Logs in and returns a cookie-store to be used for successive requests"
   [user pass]
-  (let [my-cs (clj-http.cookies/cookie-store)]
-    (http/post "https://www.packtpub.com/"
+  (let [my-cs (clj-http.cookies/cookie-store)
+        login (http/post "https://www.packtpub.com/"
                {:form-params {:email user
                               :password pass
                               :op "login"
                               :form_build_id "form-cf524c8c10d7ada4418e02c03fa39493"
                               :form_id "packt_user_login_form"}
-                :cookie-store my-cs})
+                :cookie-store my-cs})]
     my-cs))
 
 (defn get-user
@@ -62,14 +62,24 @@
   "Claims the book of the day"
   [dom my-cs]
   (http/get (extract-claim-link dom) {:cookie-store my-cs}))
-  
+
+(defn get-credentials
+  "Extracts credentials from a config-file and returns a 2 element vector with user and password."
+  [file]
+  (-> file
+      slurp
+      clojure.string/trim
+      (clojure.string/split #" ")))
+
 (defn -main
   "Prints out the e-book title of the day"
   [& args]
-  (let [user (first args) pass (second args)
+  (let [cred (get-credentials (first args))
+        user (first cred) pass (second cred)
         cs (auth user pass)
         main-dom (get-dom cs)]
     
+    ;; for debugging purposes
     (println (str "Logged in as user: " (get-user cs)))
     (println (str "Free e-book of the day: " (extract-title main-dom)))
     (println (str "Claim Link: " (extract-claim-link main-dom)))
