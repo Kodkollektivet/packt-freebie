@@ -23,6 +23,7 @@ It has no scheduler, so you need to put in in a crontab or such in order to run 
 ## Examples
 
 filename: credentials.txt
+
 file-contents: 'your@email.com password'
 
     $ java -jar packt-freebie-0.1.0-standalone.jar credentials.txt
